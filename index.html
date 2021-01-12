@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WorkInProgress: AirSynthi</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="stylesheet" href="css/mdb.min.css">
+    <link rel="stylesheet" href="src/customStyle.css">
+</head>
+
+
+<body>
+    <div class="view"
+        style="background-image: url('https://www.amazona.de/wp-content/uploads/2017/10/stage-piano-sound-programmieren-a.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+
+        <div class="mask rgba-gradient align-items-center">
+
+            <div class="container-fluid">
+                <div class="container-fluid test">
+                    <div class="row">
+                        <div class="col-md-12 gy-5 headerHeight">
+                            <h1 class="text-center">AirSynthi</h1>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-3 test">
+
+                                <!-- Allow Sound -->
+                                <div class="mb-5">
+                                    <button type="button" id="allowAudioButton" value="allowAudioButton"
+                                        class="btn btn-danger">Audio not Allowed</button>
+
+                                    <button class="btn btn-danger" id="cameraButton" type="button"><span
+                                            class="fas fa-camera-retro fa-lg"></span></button>
+                                </div>
+
+                                <label class="form-label" for="attackSlider">Attack <span id="attackOutput"
+                                        class="badge bg-primary textOutput">0.1 sec</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="10"
+                                        id="attackSlider" /></div>
+
+                                <label class="form-label" for="releaseSlider">Release <span id="releaseOutput"
+                                        class="badge bg-primary textOutput">0.1 sec</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="10"
+                                        id="releaseSlider" /></div>
+
+                                <label class="form-label" for="lfoSlider">LFO <span id="lfoOutput"
+                                        class="badge bg-primary textOutput">6 Hz</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="6"
+                                        id="lfoSlider" /></div>
+
+                                <label class="form-label" for="customRange1">Distortion <span id="distortionOutput"
+                                        class="badge bg-primary textOutput">0</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="0"
+                                        id="customRange1" /></div>
+                            </div>
+
+                            <div class="col-md-6 test">
+                                <div id="mediaContainer" class="embed-responsive">
+                                    <img class='img-fluid shadow-2-strong' src='img/noSignal.jpg' />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 test">
+
+                                <!-- <div class="mb-4">
+                                    <button id="button1" class="btn btn-primary buttonOsz">1</button>
+                                    <button id="button2" class="btn btn-primary buttonOsz">2</button>
+                                    <button id="button3" class="btn btn-primary buttonOsz">3</button>
+                                    <button id="button4" class="btn btn-primary buttonOsz">4</button>
+                                </div> -->
+
+                                <label class="form-label" for="masterGainSlider">MasterGain <span id="masterGainOutput"
+                                        class="badge bg-primary textOutput">1</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="100"
+                                        id="masterGainSlider" /></div>
+
+                                <label class="form-label" for="frequencySlider">Frequency <span id="frequencyOutput"
+                                        class="badge bg-primary textOutput">1000 Hz</span></label>
+                                <div class="range"><input type="range" class="form-range" min="1000" max="20000"
+                                        value="10000" id="frequencySlider" /></div>
+
+                                <label class="form-label" for="detuneSlider">Detune <span id="detuneOutput"
+                                        class="badge bg-primary textOutput">0 cents</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="0"
+                                        id="detuneSlider" /></div>
+
+                                <label class="form-label" for="qSlider">Quality <span id="qOutput"
+                                        class="badge bg-primary textOutput">0</span></label>
+                                <div class="range"><input type="range" class="form-range" min="0" max="100" value="6"
+                                        id="qSlider" /></div>
+
+                                <label class="form-label" for="gainSlider">Gain <span id="gainOutput"
+                                        class="badge bg-primary textOutput">0 dB</span></label>
+                                <div class="range"><input type="range" class="form-range" min="-40" max="40" value="0"
+                                        id="gainSlider" /></div>
+
+                                <div class="mt-5">
+                                    <p>OctaveShifter</p>
+                                    <button class="btn btn-primary octaveShifterButton" id="octaveShifterButtonUp"
+                                        type="button"><span class="fas fa-angle-up fa-lg"></span></button>
+                                    <button class="btn btn-primary" type="button"><label
+                                            id="octaveShifterTextOutput">0</label></button>
+                                    <button class="btn btn-primary octaveShifterButton" id="octaveShifterButtonDown"
+                                        type="button"><span class="fas fa-angle-down fa-lg"></span></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-fluid mt-5">
+
+                        <div class="row text-center mb-5">
+                            <div class="col-md-3 test"></div>
+                            <div class="col-md-6 mb-3 test">
+                                <h4 class="mb-3">Set a reverb</h4>
+
+                                <div class="btn-group mb-3" id="btn-group-reverb" role="group"
+                                    aria-label="Basic example">
+                                    <button type="button" id="room" value="room"
+                                        class="btn btn-primary disabled">Room</button>
+                                    <button type="button" id="garage" value="garage"
+                                        class="btn btn-primary disabled">Garage</button>
+                                    <button type="button" id="church" value="church"
+                                        class="btn btn-primary disabled">Church</button>
+                                    <button type="button" id="cave" value="cave"
+                                        class="btn btn-primary disabled">Cave</button>
+                                </div>
+
+                                <!-- Reverb Button -->
+                                <div class="form-check form-switch switchMID test">
+                                    <input class="form-check-input" type="checkbox" id="reverbButton" />
+                                    <label class="form-check-label labelMID" id="reverbButtonOutput"
+                                        for="reverbButton">Disabled</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 test"></div>
+
+                        </div>
+                        <div class="row text-center mb-5">
+                            <div class="col-md-3 test"></div>
+                            <div class="col-md-6 mb-3 test">
+                                <h4 class="mb-3">Set a filter</h4>
+
+                                <div class="btn-group mb-3" id="btn-group-filter" role="group"
+                                    aria-label="Basic example">
+                                    <button class="btn btn-primary disabled" type="button" id="lowpass"
+                                        value="lowpass">Lowpass</button>
+                                    <button class="btn btn-primary disabled" type="button" id="highpass"
+                                        value="highpass">Highpass</button>
+                                    <button class="btn btn-primary disabled" type="button" id="bandpass"
+                                        value="bandpass">Bandpass</button>
+                                    <button class="btn btn-primary disabled" type="button" id="allpass"
+                                        value="allpass">Allpass</button>
+                                    <button class="btn btn-primary disabled" type="button" id="lowshelf"
+                                        value="lowshelf">Lowshelf</button>
+                                    <button class="btn btn-primary disabled" type="button" id="Highshelf"
+                                        value="Highshelf">Highshelf</button>
+                                    <button class="btn btn-primary disabled" type="button" id="peaking"
+                                        value="peaking">Peaking</button>
+                                    <button class="btn btn-primary disabled" type="button" id="notch"
+                                        value="notch">Notch</button>
+                                </div>
+
+                                <div class="form-check form-switch switchMID test">
+                                    <input class="form-check-input" type="checkbox" id="filterButton" />
+                                    <label class="form-check-label labelMID" id="filterButtonOutput"
+                                        for="filterButton">Disabled</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 test"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script type="text/javascript" src="src/synth.js"></script>
+    <script type="text/javascript" src="src/midi.js"></script>
+
+</body>
+
+</html>
