@@ -134,17 +134,15 @@ let reverbButton = document.querySelector("#reverbButton");
 let filterbButton = document.querySelector("#filterbButton");
 let reverbButtonOutput = document.querySelector("#reverbButtonOutput");
 let filterButtonOutput = document.querySelector("#filterButtonOutput");
-let isAudioEnabled = true;
-let ButtonGroupEnabled = true;
-let cameraEnabled = false;
-
 let buttons = document.getElementsByClassName("buttonOsz");
-
 let sliders = document.getElementsByClassName("form-range");
 let reverbList = document.querySelector("#btn-group-reverb");
 let filterList = document.querySelector("#btn-group-filter");
 let reverbOutput = document.getElementById("reverbOutput");
 let filterOutput = document.getElementById("filterOutput");
+let isAudioEnabled = true;
+let ButtonGroupEnabled = true;
+let cameraEnabled = false;
 
 let context = new AudioContext();
 let masterGain = context.createGain();
@@ -192,13 +190,13 @@ cameraButton.addEventListener("click", function (e) {
         mediaContainer.innerHTML = "<video autoplay='true' id='videoElement'></video>";
         if (navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
-              .then(function (stream) {
-                document.querySelector("#videoElement").srcObject = stream;
-              })
-              .catch(function (err0r) {
-                console.log("Something went wrong!");
-              });
-          }     
+                .then(function (stream) {
+                    document.querySelector("#videoElement").srcObject = stream;
+                })
+                .catch(function (err0r) {
+                    console.log("Something went wrong!");
+                });
+        }
     } else {
         mediaContainer.classList.remove("embed-responsive-16by9");
         cameraButton.classList.remove("btn-success");
@@ -207,7 +205,6 @@ cameraButton.addEventListener("click", function (e) {
         mediaContainer.innerHTML = "<img class='img-fluid shadow-2-strong' src='img/noSignal.jpg' />";
     }
 });
-
 
 for (let i = 0; i < sliders.length; i++) {
     sliders[i].addEventListener("mousemove", changeParameter);
@@ -265,7 +262,6 @@ allowAudioButton.addEventListener("click", function (e) {
     filter.connect(masterGain);
 });
 
-
 // ButtonGroups
 let reverbButtonList = ["room", "garage", "church", "cave"];
 let filterButtonList = ["lowpass", "highpass", "bandpass", "allpass", "lowshelf", "Highshelf", "peaking", "notch"];
@@ -287,9 +283,7 @@ reverbList.addEventListener("mousedown", function (e) {
         changeActiveButtonClass(name, reverbButtonList);
         loadImpulseResponse(name);
     }
-
 });
-
 
 function changeActiveButtonClass(name, buttonList) {
     buttonList = buttonList;
@@ -305,9 +299,6 @@ function changeActiveButtonClass(name, buttonList) {
 
 };
 
-// Reverb
-// loadImpulseResponse("room"); // eventuell entfernen falls reverb beim seitenladen aus sein soll!
-
 function loadImpulseResponse(selectedReverb) {
     fetch("impulseResponses/" + selectedReverb + ".wav")
         .then((response) => response.arrayBuffer())
@@ -321,8 +312,6 @@ function loadImpulseResponse(selectedReverb) {
             convolver.buffer = audioBuffer;
             convolver.normalize = true;
 
-            //hier muss der AudioGraph wieder zusammengesteckt werden!
-
             if (ButtonGroupEnabled) {
                 filter.disconnect();
                 filter.connect(convolver);
@@ -332,7 +321,6 @@ function loadImpulseResponse(selectedReverb) {
                 convolver.connect(masterGain);
             }
 
-            // console.log("reverb ist an!");
         })
         .catch(console.error);
 }
@@ -354,16 +342,16 @@ octaveShifterFunction(octaveShifterButtonUp, octaveShifterButtonDown, octaveShif
 function octaveShifterFunction(ButtonUp, ButtonDown, TextOutput) {
     ButtonUp.addEventListener("click", function () {
         octaveShifterCounter += 1;
-        TextOutput.innerHTML = octaveShifterCounter; 
-        console.log(octaveShifterCounter);  
-    });
-    
-    ButtonDown.addEventListener("click", function () {
-        octaveShifterCounter -= 1;
-        TextOutput.innerHTML = octaveShifterCounter; 
+        TextOutput.innerHTML = octaveShifterCounter;
         console.log(octaveShifterCounter);
     });
-}  
+
+    ButtonDown.addEventListener("click", function () {
+        octaveShifterCounter -= 1;
+        TextOutput.innerHTML = octaveShifterCounter;
+        console.log(octaveShifterCounter);
+    });
+}
 
 function startNote(note, velocity) {
     let oscTypes = ["sine", "sawtooth"];
