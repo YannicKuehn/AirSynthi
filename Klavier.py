@@ -15,7 +15,7 @@ cv2.namedWindow('Video')
 def nothing (x):
     pass
 
-#Trackbars erstellen
+#lower keys
 cv2.createTrackbar('thresholdH', 'Video', 20, 180, nothing)
 cv2.createTrackbar('thresholdS', 'Video', 30, 255, nothing)
 cv2.createTrackbar('thresholdV', 'Video', 30, 255, nothing)
@@ -188,7 +188,6 @@ def sendMidiControlChange(control, value):
     message = mido.Message('control_change', control=control, value=value)
     midiOutput.send(message)
        
-
 while cap.isOpened():
     ret, frame = cap.read()
 
@@ -307,8 +306,6 @@ while cap.isOpened():
 
     if cv2.waitKey(25) != -1:
         break
-
-
 
 cap.release()
 cv2.destroyAllWindows()
