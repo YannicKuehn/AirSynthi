@@ -7,15 +7,15 @@ import time
 print("Midi output ports: ", mido.get_output_names())
 midiOutput = mido.open_output("LoopBe Internal MIDI 1") #hier ändern falls MAC
 
-# cap = cv2.VideoCapture('./img/klavier_PS_2.mp4')
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('./img/klavier_PS_2.mp4')
+#cap = cv2.VideoCapture(0)
 
 cv2.namedWindow('Video')
 
 def nothing (x):
     pass
 
-#Trackbars erstellen
+#lower keys
 cv2.createTrackbar('thresholdH', 'Video', 20, 180, nothing)
 cv2.createTrackbar('thresholdS', 'Video', 30, 255, nothing)
 cv2.createTrackbar('thresholdV', 'Video', 30, 255, nothing)
@@ -41,61 +41,28 @@ def mouseCallback(event, x, y, flags, param):
 upperKeyStates = [False, False, False, False, False, False]
 lowerKeyStates = [False, False, False, False, False, False, False, False, False]
 
-""" def keyUpperDetect(marker, contours, r, g, b):
-    detectedAnyUpperKeys =  False
-    keyBuffer = []
-    global upperKeyStates
-    for cnt in contours:
-        x,y,width,height = cv2.boundingRect(cnt)
-        if height > 50 and width > 20:
-            cv2.rectangle(frame,(x,y),(x+width,y+height),(b, g, r),2)
-            keyBuffer.append((x, y, width, height))
-            #print(marker[0])
-            #print(marker[1])
-            if (marker[0] > x and marker[0] < x + width):
-                if (marker[1] > y and marker[1] < y + height):
-                    print("upper " + str(len(keyBuffer)))
-                    upperKeyManager(len(keyBuffer))
-                    detectedAnyUpperKeys = True 
-        else:
-            break                             
-    if (not detectedAnyUpperKeys):
-        #print("all upper off!")
-        upperOff()
-        upperKeyStates = [False, False, False, False, False, False] """
-
 def keyDetect(marker, contours, contours2 , r, g, b):
-    detectedAnyLowerKeys =  False
-    detectedAnyUpperKeys =  False
     upperKeyBuffer = []
     lowerKeyBuffer = []
-    global lowerKeyStates
-    global upperKeyStates
     for cnt in contours:
         x,y,width,height = cv2.boundingRect(cnt)
         if height > 50 and width > 20:
             cv2.rectangle(frame,(x,y),(x+width,y+height),(b, g, r),2)
             lowerKeyBuffer.append((x, y, width, height))
-            if (marker[0] > x and marker[0] < x + width):
-                if (marker[1] > y and marker[1] < y + height):
-                    #print("lower " + str(len(lowerKeyBuffer)))
-                    lowerKeyManager(len(lowerKeyBuffer))
-                    detectedAnyLowerKeys = True          
+            if (marker[0] > x and marker[0] < x + width and marker[1] > y and marker[1] < y + height):
+                lowerKeyManager(len(lowerKeyBuffer))
+            else: 
+                lowerOff(len(lowerKeyBuffer))          
     for cnt in contours2:
         x,y,width,height = cv2.boundingRect(cnt)
         if height > 50 and width > 20:
             cv2.rectangle(frame,(x,y),(x+width,y+height),(b, r, g),2)
             upperKeyBuffer.append((x, y, width, height))
-            if (marker[0] > x and marker[0] < x + width):
-                if (marker[1] > y and marker[1] < y + height):
-                    #print("upper " + str(len(upperKeyBuffer)))
-                    upperKeyManager(len(upperKeyBuffer))
-                    detectedAnyUpperKeys = True                                      
-    if (not detectedAnyLowerKeys):
-        lowerOff()       
-    if (not detectedAnyUpperKeys):
-        upperOff()       
-
+            if (marker[0] > x and marker[0] < x + width and marker[1] > y and marker[1] < y + height):
+                upperKeyManager(len(upperKeyBuffer))
+            else:
+                upperOff(len(upperKeyBuffer))                                      
+  
 def upperKeyManager(index):
     if(index == 1 and not upperKeyStates[0]):
         sendMidiOn(73, 100)
@@ -160,52 +127,52 @@ def lowerKeyManager(index):
         sendMidiOn(60, 100)
         print("note " + str(60) + " on!")
 
-def lowerOff():
-    if(lowerKeyStates[0]):
+def lowerOff(index):
+    if(lowerKeyStates[0] and index == 1):
         sendMidiOff(74, 0)
         lowerKeyStates[0] = False
-    if(lowerKeyStates[1]):
+    if(lowerKeyStates[1] and index == 2):
         sendMidiOff(72, 0)
         lowerKeyStates[1] = False
-    if(lowerKeyStates[2]):
+    if(lowerKeyStates[2] and index == 3):
         sendMidiOff(71, 0)
         lowerKeyStates[2] = False
-    if(lowerKeyStates[3]):
+    if(lowerKeyStates[3] and index == 4):
         sendMidiOff(69, 0)
         lowerKeyStates[3] = False
-    if(lowerKeyStates[4]):
+    if(lowerKeyStates[4] and index == 5):
         sendMidiOff(67, 0)
         lowerKeyStates[4] = False
-    if(lowerKeyStates[5]):
+    if(lowerKeyStates[5] and index == 6):
         sendMidiOff(65, 0)
         lowerKeyStates[5] = False
-    if(lowerKeyStates[6]):
+    if(lowerKeyStates[6] and index == 7):
         sendMidiOff(64, 0)
         lowerKeyStates[6] = False
-    if(lowerKeyStates[7]):
+    if(lowerKeyStates[7] and index == 8):
         sendMidiOff(62, 0)
         lowerKeyStates[7] = False
-    if(lowerKeyStates[8]):
+    if(lowerKeyStates[8] and index == 9):
         sendMidiOff(60, 0)
         lowerKeyStates[8] = False
 
-def upperOff():    
-    if(upperKeyStates[0]):
+def upperOff(index):    
+    if(upperKeyStates[0] and index == 1):
         sendMidiOff(73, 0)
         upperKeyStates[0] = False
-    if(upperKeyStates[1]):
+    if(upperKeyStates[1] and index == 2):
         sendMidiOff(70, 0)
         upperKeyStates[1] = False
-    if(upperKeyStates[2]):
+    if(upperKeyStates[2] and index == 3):
         sendMidiOff(68, 0)
         upperKeyStates[2] = False
-    if(upperKeyStates[3]):
+    if(upperKeyStates[3] and index == 4):
         sendMidiOff(66, 0)
         upperKeyStates[3] = False
-    if(upperKeyStates[4]):
+    if(upperKeyStates[4] and index == 5):
         sendMidiOff(63, 0)
         upperKeyStates[4] = False
-    if(upperKeyStates[5]):
+    if(upperKeyStates[5] and index == 6):
         sendMidiOff(61, 0)
         upperKeyStates[5] = False
 
@@ -221,7 +188,6 @@ def sendMidiControlChange(control, value):
     message = mido.Message('control_change', control=control, value=value)
     midiOutput.send(message)
        
-
 while cap.isOpened():
     ret, frame = cap.read()
 
@@ -231,19 +197,19 @@ while cap.isOpened():
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
 
-    #typische Werte für den roten Handschuh
-    #typicalH, typicalS , typicalV = 120, 250, 240
-    typicalH, typicalS , typicalV = 80, 80, 150
+    #lower keys
+    typicalH, typicalS , typicalV = 120, 250, 240
+    #typicalH, typicalS , typicalV = 80, 80, 150
 
     #upper keys
-    #typicalH2, typicalS2 , typicalV2 = 60, 245, 255
-    typicalH2, typicalS2 , typicalV2 = 110, 150, 150 
+    typicalH2, typicalS2 , typicalV2 = 60, 245, 255
+    #typicalH2, typicalS2 , typicalV2 = 110, 150, 150 
 
     #marker
-    #typicalH3, typicalS3 , typicalV3 = 0, 240, 234
-    typicalH3, typicalS3 , typicalV3 = 180, 70, 210 
+    typicalH3, typicalS3 , typicalV3 = 0, 240, 234
+    #typicalH3, typicalS3 , typicalV3 = 180, 70, 210 
 
-    #Erzeugen der Thresholds über slider Werte
+    #lower keys
     lowerH = typicalH - cv2.getTrackbarPos('thresholdH', 'Video')
     lowerS = typicalS - cv2.getTrackbarPos('thresholdS', 'Video')
     lowerV = typicalV - cv2.getTrackbarPos('thresholdV', 'Video')
@@ -271,12 +237,12 @@ while cap.isOpened():
     upperV3 = typicalV3 + cv2.getTrackbarPos('thresholdV3', 'Video')
 
 
-    # Schwellwertbildung der Farbkanäle
+    # lower keys
     maskh = cv2.inRange(h, lowerH, upperH, 180)
     masks = cv2.inRange(s, lowerS, upperS, 255)
     maskv = cv2.inRange(v, lowerV, upperV, 255)
 
-    # Andere Tasten
+    # upper keys
     maskh2 = cv2.inRange(h, lowerH2, upperH2, 180)
     masks2 = cv2.inRange(s, lowerS2, upperS2, 255)
     maskv2 = cv2.inRange(v, lowerV2, upperV2, 255)
@@ -286,7 +252,7 @@ while cap.isOpened():
     masks3 = cv2.inRange(s, lowerS3, upperS3, 255)
     maskv3 = cv2.inRange(v, lowerV3, upperV3, 255)
 
-    #zusammenführung der masken
+    # lower keys
     mask = maskh * masks * maskv
 
     # upper keys
@@ -296,7 +262,7 @@ while cap.isOpened():
     mask3 = maskh3 * masks3 * maskv3
 
 
-
+    # lower keys
     opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, kernel)
     dilation = cv2.dilate(closing, dEkernel, iterations=1)
@@ -329,7 +295,6 @@ while cap.isOpened():
     cv2.circle(frame, (cX,cY), 2, (255, 255, 255), -1)
 
     #detect Keys
-    #keyUpperDetect((cX, cY), contours2, 255, 0, 0)
     keyDetect((cX, cY), contours, contours2, 0, 255, 0)
 
     # Masken
@@ -341,8 +306,6 @@ while cap.isOpened():
 
     if cv2.waitKey(25) != -1:
         break
-
-
 
 cap.release()
 cv2.destroyAllWindows()
