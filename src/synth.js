@@ -179,6 +179,11 @@ distortion.oversample = "4x";
 let cameraButton = document.querySelector("#cameraButton");
 let mediaContainer = document.querySelector("#mediaContainer");
 
+let displayMediaOptions = {
+    video: { width: 400, height: 400 },
+    audio: false,
+};
+
 cameraButton.addEventListener("click", function (e) {
     cameraEnabled = !cameraEnabled;
 
@@ -189,12 +194,17 @@ cameraButton.addEventListener("click", function (e) {
         cameraButton.classList.add("btn-success");
         mediaContainer.innerHTML = "<video autoplay='true' id='videoElement'></video>";
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getDisplayMedia()
                 .then(function (stream) {
                     document.querySelector("#videoElement").srcObject = stream;
                 })
                 .catch(function (err0r) {
                     console.log("Something went wrong!");
+                    mediaContainer.classList.remove("embed-responsive-16by9");
+                    cameraButton.classList.remove("btn-success");
+                    cameraButton.classList.add("btn-danger");
+                    console.log("cameraButton: false")
+                    mediaContainer.innerHTML = "<img class='img-fluid shadow-2-strong' src='img/noSignal.jpg' />";
                 });
         }
     } else {

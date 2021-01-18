@@ -7,28 +7,28 @@ import time
 print("Midi output ports: ", mido.get_output_names())
 midiOutput = mido.open_output("LoopBe Internal MIDI 1") #hier ändern falls MAC
 
-cap = cv2.VideoCapture('./img/klavier_PS_2.mp4')
-#cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture('./img/klavier_PS_2.mp4')
+cap = cv2.VideoCapture(0)
 
-cv2.namedWindow('Video')
+cv2.namedWindow('Video1')
 
 def nothing (x):
     pass
 
 #lower keys
-cv2.createTrackbar('thresholdH', 'Video', 20, 180, nothing)
-cv2.createTrackbar('thresholdS', 'Video', 30, 255, nothing)
-cv2.createTrackbar('thresholdV', 'Video', 30, 255, nothing)
+cv2.createTrackbar('thresholdH', 'Video1', 20, 180, nothing)
+cv2.createTrackbar('thresholdS', 'Video1', 30, 255, nothing)
+cv2.createTrackbar('thresholdV', 'Video1', 30, 255, nothing)
 
 #upper keys
-cv2.createTrackbar('thresholdH2', 'Video', 20, 180, nothing)
-cv2.createTrackbar('thresholdS2', 'Video', 30, 255, nothing)
-cv2.createTrackbar('thresholdV2', 'Video', 30, 255, nothing)
+cv2.createTrackbar('thresholdH2', 'Video1', 20, 180, nothing)
+cv2.createTrackbar('thresholdS2', 'Video1', 30, 255, nothing)
+cv2.createTrackbar('thresholdV2', 'Video1', 30, 255, nothing)
 
 #marker
-cv2.createTrackbar('thresholdH3', 'Video', 40, 180, nothing)
-cv2.createTrackbar('thresholdS3', 'Video', 40, 255, nothing)
-cv2.createTrackbar('thresholdV3', 'Video', 40, 255, nothing)
+cv2.createTrackbar('thresholdH3', 'Video1', 40, 180, nothing)
+cv2.createTrackbar('thresholdS3', 'Video1', 40, 255, nothing)
+cv2.createTrackbar('thresholdV3', 'Video1', 40, 255, nothing)
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 dEkernel = np.ones((3,3), np.uint8)
@@ -210,31 +210,31 @@ while cap.isOpened():
     #typicalH3, typicalS3 , typicalV3 = 180, 70, 210 
 
     #lower keys
-    lowerH = typicalH - cv2.getTrackbarPos('thresholdH', 'Video')
-    lowerS = typicalS - cv2.getTrackbarPos('thresholdS', 'Video')
-    lowerV = typicalV - cv2.getTrackbarPos('thresholdV', 'Video')
+    lowerH = typicalH - cv2.getTrackbarPos('thresholdH', 'Video1')
+    lowerS = typicalS - cv2.getTrackbarPos('thresholdS', 'Video1')
+    lowerV = typicalV - cv2.getTrackbarPos('thresholdV', 'Video1')
 
-    upperH = typicalH + cv2.getTrackbarPos('thresholdH', 'Video')
-    upperS = typicalS + cv2.getTrackbarPos('thresholdS', 'Video')
-    upperV = typicalV + cv2.getTrackbarPos('thresholdV', 'Video')
+    upperH = typicalH + cv2.getTrackbarPos('thresholdH', 'Video1')
+    upperS = typicalS + cv2.getTrackbarPos('thresholdS', 'Video1')
+    upperV = typicalV + cv2.getTrackbarPos('thresholdV', 'Video1')
 
     #upper keys
-    lowerH2 = typicalH2 - cv2.getTrackbarPos('thresholdH2', 'Video')
-    lowerS2 = typicalS2 - cv2.getTrackbarPos('thresholdS2', 'Video')
-    lowerV2 = typicalV2 - cv2.getTrackbarPos('thresholdV2', 'Video')
+    lowerH2 = typicalH2 - cv2.getTrackbarPos('thresholdH2', 'Video1')
+    lowerS2 = typicalS2 - cv2.getTrackbarPos('thresholdS2', 'Video1')
+    lowerV2 = typicalV2 - cv2.getTrackbarPos('thresholdV2', 'Video1')
 
-    upperH2 = typicalH2 + cv2.getTrackbarPos('thresholdH2', 'Video')
-    upperS2 = typicalS2 + cv2.getTrackbarPos('thresholdS2', 'Video')
-    upperV2 = typicalV2 + cv2.getTrackbarPos('thresholdV2', 'Video')
+    upperH2 = typicalH2 + cv2.getTrackbarPos('thresholdH2', 'Video1')
+    upperS2 = typicalS2 + cv2.getTrackbarPos('thresholdS2', 'Video1')
+    upperV2 = typicalV2 + cv2.getTrackbarPos('thresholdV2', 'Video1')
 
     #marker
-    lowerH3 = typicalH3 - cv2.getTrackbarPos('thresholdH3', 'Video')
-    lowerS3 = typicalS3 - cv2.getTrackbarPos('thresholdS3', 'Video')
-    lowerV3 = typicalV3 - cv2.getTrackbarPos('thresholdV3', 'Video')
+    lowerH3 = typicalH3 - cv2.getTrackbarPos('thresholdH3', 'Video1')
+    lowerS3 = typicalS3 - cv2.getTrackbarPos('thresholdS3', 'Video1')
+    lowerV3 = typicalV3 - cv2.getTrackbarPos('thresholdV3', 'Video1')
 
-    upperH3 = typicalH3 + cv2.getTrackbarPos('thresholdH3', 'Video')
-    upperS3 = typicalS3 + cv2.getTrackbarPos('thresholdS3', 'Video')
-    upperV3 = typicalV3 + cv2.getTrackbarPos('thresholdV3', 'Video')
+    upperH3 = typicalH3 + cv2.getTrackbarPos('thresholdH3', 'Video1')
+    upperS3 = typicalS3 + cv2.getTrackbarPos('thresholdS3', 'Video1')
+    upperV3 = typicalV3 + cv2.getTrackbarPos('thresholdV3', 'Video1')
 
 
     # lower keys
