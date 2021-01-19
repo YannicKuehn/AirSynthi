@@ -26,9 +26,9 @@ cv2.createTrackbar('thresholdS2', 'Video1', 30, 255, nothing)
 cv2.createTrackbar('thresholdV2', 'Video1', 30, 255, nothing)
 
 #marker
-cv2.createTrackbar('thresholdH3', 'Video1', 40, 180, nothing)
-cv2.createTrackbar('thresholdS3', 'Video1', 40, 255, nothing)
-cv2.createTrackbar('thresholdV3', 'Video1', 40, 255, nothing)
+cv2.createTrackbar('thresholdH3', 'Video1', 15, 180, nothing)
+cv2.createTrackbar('thresholdS3', 'Video1', 30, 255, nothing)
+cv2.createTrackbar('thresholdV3', 'Video1', 30, 255, nothing)
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
 dEkernel = np.ones((3,3), np.uint8)
@@ -198,16 +198,16 @@ while cap.isOpened():
     h, s, v = cv2.split(hsv)
 
     #lower keys
-    typicalH, typicalS , typicalV = 120, 250, 240
-    #typicalH, typicalS , typicalV = 80, 80, 150
+    #typicalH, typicalS , typicalV = 120, 250, 240
+    typicalH, typicalS , typicalV = 110, 120, 160
 
     #upper keys
-    typicalH2, typicalS2 , typicalV2 = 60, 245, 255
-    #typicalH2, typicalS2 , typicalV2 = 110, 150, 150 
+    #typicalH2, typicalS2 , typicalV2 = 60, 245, 255
+    typicalH2, typicalS2 , typicalV2 = 70, 60, 175 
 
     #marker
-    typicalH3, typicalS3 , typicalV3 = 0, 240, 234
-    #typicalH3, typicalS3 , typicalV3 = 180, 70, 210 
+    #typicalH3, typicalS3 , typicalV3 = 0, 240, 234
+    typicalH3, typicalS3 , typicalV3 = 5, 150, 230
 
     #lower keys
     lowerH = typicalH - cv2.getTrackbarPos('thresholdH', 'Video1')
