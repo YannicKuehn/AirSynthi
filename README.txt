@@ -1,7 +1,7 @@
 
 AirSynthie
 
-Our scripts/media:
+Our scripts/media files:
 - Klavier.py
 - index.html
 - src/customJS.js
